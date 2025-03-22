@@ -1,0 +1,31 @@
+name: Sync Fork
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # 每天自动同步一次
+  workflow_dispatch:  # 手动触发同步
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the fork
+        uses: actions/checkout@v2
+
+      - name: Set up Git
+        uses: actions/setup-git@v2
+        with:
+          git_user_name: 'handsomevvv'  # 这里填写你的用户名
+          git_user_email: 'eexx070@gmail.com'  # 这里填写你的邮箱
+
+      - name: Add upstream remote
+        run: git remote add upstream https://github.com/TangSengDaoDao/TangSengDaoDaoServer.git  # 这里替换为原仓库的信息
+
+      - name: Fetch upstream changes
+        run: git fetch upstream
+
+      - name: Merge upstream changes into main
+        run: git merge upstream/main
+
+      - name: Push changes to fork
+        run: git push origin main
