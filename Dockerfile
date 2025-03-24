@@ -1,6 +1,6 @@
 FROM golang:1.20 as build
 
-ENV GOPROXY https://goproxy.cn,direct
+#ENV GOPROXY https://goproxy.cn,direct
 ENV GO111MODULE on
 
 
@@ -22,11 +22,17 @@ ADD . .
 
 # RUN CGO_ENABLED=0 GOOS=linux go build -ldflags='-w -extldflags "-static"' -installsuffix cgo -o app ./main.go
 
+#RUN GIT_COMMIT=$(git rev-parse HEAD) && \
+#    GIT_COMMIT_DATE=$(git log --date=iso8601-strict -1 --pretty=%ct) && \
+#    GIT_VERSION=$(git describe --tags --abbrev=0) && \
+#    GIT_TREE_STATE=$(test -n "`git status --porcelain`" && echo "dirty" || echo "clean") && \
+#    CGO_ENABLED=0 GOOS=linux go build -ldflags="-w -extldflags '-static' -X main.Commit=$GIT_COMMIT -X main.CommitDate=$GIT_COMMIT_DATE -X main.Version=$GIT_VERSION -X main.TreeState=$GIT_TREE_STATE" -installsuffix cgo  -o app ./main.go
+
 RUN GIT_COMMIT=$(git rev-parse HEAD) && \
     GIT_COMMIT_DATE=$(git log --date=iso8601-strict -1 --pretty=%ct) && \
-    GIT_VERSION=$(git describe --tags --abbrev=0) && \
+    GIT_VERSION=$(git describe --tags --abbrev=0 2>/dev/null || echo "v2.2.2") && \
     GIT_TREE_STATE=$(test -n "`git status --porcelain`" && echo "dirty" || echo "clean") && \
-    CGO_ENABLED=0 GOOS=linux go build -ldflags="-w -extldflags '-static' -X main.Commit=$GIT_COMMIT -X main.CommitDate=$GIT_COMMIT_DATE -X main.Version=$GIT_VERSION -X main.TreeState=$GIT_TREE_STATE" -installsuffix cgo  -o app ./main.go
+    CGO_ENABLED=0 GOOS=linux go build -ldflags="-w -extldflags '-static' -X main.Commit=$GIT_COMMIT -X main.CommitDate=$GIT_COMMIT_DATE -X main.Version=$GIT_VERSION -X main.TreeState=$GIT_TREE_STATE" -installsuffix cgo -o app ./main.go
 
 
 FROM alpine as prod
