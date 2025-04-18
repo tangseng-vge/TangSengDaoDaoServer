@@ -162,7 +162,7 @@ tttttttttttttttttttttttttttttttttttttttt
 	`
 	cfg := ctx.GetConfig()
 	infoStr = strings.Replace(infoStr, "#mode#", string(cfg.Mode), -1)
-	infoStr = strings.Replace(infoStr, "#appname#", cfg.AppName, -1)
+	//infoStr = strings.Replace(infoStr, "#appname#", cfg.AppName, -1)
 	infoStr = strings.Replace(infoStr, "#version#", cfg.Version, -1)
 	infoStr = strings.Replace(infoStr, "#git#", fmt.Sprintf("%s-%s", CommitDate, Commit), -1)
 	infoStr = strings.Replace(infoStr, "#gobuild#", runtime.Version(), -1)

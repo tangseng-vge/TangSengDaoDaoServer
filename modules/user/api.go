@@ -62,7 +62,7 @@ type User struct {
 	onlineService *OnlineService
 	giteeDB       *giteeDB
 	githubDB      *githubDB
-	appConfig     *AppConfig
+	appConfigDB   *appConfigDB
 
 	setting *Setting
 	log.Log
@@ -81,17 +81,18 @@ type User struct {
 	appService               app.IService
 }
 
-type AppConfig struct {
-	ctx *config.Context
-	log.Log
-	appConfigDB *appConfigDB
-}
+//type AppConfig struct {
+//	ctx *config.Context
+//	log.Log
+//	appConfigDB *appConfigDB
+//}
 
 // New New
 func New(ctx *config.Context) *User {
 	u := &User{
 		ctx:                      ctx,
 		db:                       NewDB(ctx),
+		appConfigDB:              newAppConfigDB(ctx),
 		deviceDB:                 newDeviceDB(ctx),
 		friendDB:                 newFriendDB(ctx),
 		smsServie:                commonapi.NewSMSService(ctx),
@@ -495,7 +496,7 @@ func (u *User) userIM(c *wkhttp.Context) {
 	ip := utils.GetClientPublicIP(c.Request)
 	area := utils.GetInstance().GetArea(ip)
 
-	appConfigM, err := u.appConfig.appConfigDB.query()
+	appConfigM, err := u.appConfigDB.query()
 	if err != nil {
 		u.Error("读取上传配置失败！", zap.Error(err))
 		c.ResponseError(errors.New("读取上传配置失败！"))
@@ -511,9 +512,9 @@ func (u *User) userIM(c *wkhttp.Context) {
 	var wssAddress = ""
 	//  socket或websocket
 	if "CN" != area {
-		tcpAddress = appConfigM.SocketAddr
-		wsAddress = appConfigM.WsAddr
-		wssAddress = appConfigM.WssAddr
+		tcpAddress = appConfigM.SocketAddrJw
+		wsAddress = appConfigM.WsAddrJw
+		wssAddress = appConfigM.WssAddrJw
 	} else {
 		tcpAddress = appConfigM.SocketAddr
 		wsAddress = appConfigM.WsAddr

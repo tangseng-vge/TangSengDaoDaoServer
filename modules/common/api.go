@@ -329,9 +329,9 @@ func (cn *Common) appConfig(c *wkhttp.Context) {
 	area := utils.GetInstance().GetArea(ip)
 	var WebURL = ""
 	if "CN" != area {
-		WebURL = appConfigM.WebAddr
-	} else {
 		WebURL = appConfigM.WebAddrJw
+	} else {
+		WebURL = appConfigM.WebAddr
 	}
 	c.JSON(http.StatusOK, &appConfigResp{
 		Version:                        appConfigM.Version,

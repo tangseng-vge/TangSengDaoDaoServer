@@ -22,22 +22,22 @@ import (
 type File struct {
 	ctx *config.Context
 	log.Log
-	service IService
-	cn      *AppConfig
+	service     IService
+	appConfigDB *appConfigDB
 }
 
 type AppConfig struct {
 	ctx *config.Context
 	log.Log
-	appConfigDB *appConfigDB
 }
 
 // New New
 func New(ctx *config.Context) *File {
 	return &File{
-		ctx:     ctx,
-		Log:     log.NewTLog("File"),
-		service: NewService(ctx),
+		ctx:         ctx,
+		Log:         log.NewTLog("File"),
+		service:     NewService(ctx),
+		appConfigDB: newAppConfigDB(ctx),
 	}
 }
 
@@ -100,7 +100,7 @@ func (f *File) getFilePath(c *wkhttp.Context) {
 	}
 	var path string
 	//  发送图片会显示真实ip地址
-	appConfigM, err := f.cn.appConfigDB.query()
+	appConfigM, err := f.appConfigDB.query()
 	if err != nil {
 		f.Error("读取上传配置失败！", zap.Error(err))
 		c.ResponseError(errors.New("读取上传配置失败！"))
@@ -115,25 +115,25 @@ func (f *File) getFilePath(c *wkhttp.Context) {
 	area := utils.GetInstance().GetArea(ip)
 	var BASEURL = ""
 	if "CN" != area {
-		BASEURL = appConfigM.ApiAddr
-	} else {
 		BASEURL = appConfigM.ApiAddrJw
+	} else {
+		BASEURL = appConfigM.ApiAddr
 	}
 
 	if Type(fileType) == TypeMomentCover {
 		// 动态封面
-		path = fmt.Sprintf("%s/file/upload?type=%s&path=/%s.png", BASEURL, fileType, loginUID)
+		path = fmt.Sprintf("%sv1/file/upload?type=%s&path=/%s.png", BASEURL, fileType, loginUID)
 	} else if Type(fileType) == TypeSticker {
 		// 自定义表情
-		path = fmt.Sprintf("%s/file/upload?type=%s&path=/%s/%s.gif", BASEURL, fileType, loginUID, util.GenerUUID())
+		path = fmt.Sprintf("%sv1/file/upload?type=%s&path=/%s/%s.gif", BASEURL, fileType, loginUID, util.GenerUUID())
 	} else if Type(fileType) == TypeWorkplaceBanner {
 		// 工作台横幅
-		path = fmt.Sprintf("%s/file/upload?type=%s&path=/workplace/banner/%s", BASEURL, fileType, path)
+		path = fmt.Sprintf("%sv1/file/upload?type=%s&path=/workplace/banner/%s", BASEURL, fileType, path)
 	} else if Type(fileType) == TypeWorkplaceAppIcon {
 		// 工作台appIcon
-		path = fmt.Sprintf("%s/file/upload?type=%s&path=/workplace/appicon/%s", BASEURL, fileType, path)
+		path = fmt.Sprintf("%sv1/file/upload?type=%s&path=/workplace/appicon/%s", BASEURL, fileType, path)
 	} else {
-		path = fmt.Sprintf("%s/file/upload?type=%s&path=%s", BASEURL, fileType, uploadPath)
+		path = fmt.Sprintf("%sv1/file/upload?type=%s&path=%s", BASEURL, fileType, uploadPath)
 	}
 	c.Response(map[string]string{
 		"url": path,
