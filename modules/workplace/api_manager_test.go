@@ -9,8 +9,8 @@ import (
 	"testing"
 
 	"github.com/TangSengDaoDao/TangSengDaoDaoServer/pkg/util"
-	"github.com/TangSengDaoDao/TangSengDaoDaoServerLib/testutil"
 	"github.com/stretchr/testify/assert"
+	"github.com/tangseng-vge/TangSengDaoDaoServerLib/testutil"
 )
 
 func TestAddBanner(t *testing.T) {

@@ -1,9 +1,9 @@
 package group
 
 import (
-	"github.com/TangSengDaoDao/TangSengDaoDaoServerLib/pkg/db"
-	"github.com/TangSengDaoDao/TangSengDaoDaoServerLib/pkg/util"
 	"github.com/gocraft/dbr/v2"
+	"github.com/tangseng-vge/TangSengDaoDaoServerLib/pkg/db"
+	"github.com/tangseng-vge/TangSengDaoDaoServerLib/pkg/util"
 )
 
 // InsertInviteTx 添加邀请信息

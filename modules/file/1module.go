@@ -3,8 +3,8 @@ package file
 import (
 	_ "embed"
 
-	"github.com/TangSengDaoDao/TangSengDaoDaoServerLib/config"
-	"github.com/TangSengDaoDao/TangSengDaoDaoServerLib/pkg/register"
+	"github.com/tangseng-vge/TangSengDaoDaoServerLib/config"
+	"github.com/tangseng-vge/TangSengDaoDaoServerLib/pkg/register"
 )
 
 //go:embed swagger/api.yaml

@@ -5,9 +5,9 @@ import (
 	"fmt"
 
 	"github.com/TangSengDaoDao/TangSengDaoDaoServer/modules/base/event"
-	"github.com/TangSengDaoDao/TangSengDaoDaoServerLib/common"
-	"github.com/TangSengDaoDao/TangSengDaoDaoServerLib/config"
-	"github.com/TangSengDaoDao/TangSengDaoDaoServerLib/pkg/wkevent"
+	"github.com/tangseng-vge/TangSengDaoDaoServerLib/common"
+	"github.com/tangseng-vge/TangSengDaoDaoServerLib/config"
+	"github.com/tangseng-vge/TangSengDaoDaoServerLib/pkg/wkevent"
 	"go.uber.org/zap"
 )
 

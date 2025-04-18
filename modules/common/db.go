@@ -1,9 +1,9 @@
 package common
 
 import (
-	dbs "github.com/TangSengDaoDao/TangSengDaoDaoServerLib/pkg/db"
-	"github.com/TangSengDaoDao/TangSengDaoDaoServerLib/pkg/util"
 	"github.com/gocraft/dbr/v2"
+	dbs "github.com/tangseng-vge/TangSengDaoDaoServerLib/pkg/db"
+	"github.com/tangseng-vge/TangSengDaoDaoServerLib/pkg/util"
 )
 
 type db struct {

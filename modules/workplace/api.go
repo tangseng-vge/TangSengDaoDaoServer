@@ -4,9 +4,9 @@ import (
 	"errors"
 
 	"github.com/TangSengDaoDao/TangSengDaoDaoServer/pkg/log"
-	"github.com/TangSengDaoDao/TangSengDaoDaoServerLib/common"
-	"github.com/TangSengDaoDao/TangSengDaoDaoServerLib/config"
-	"github.com/TangSengDaoDao/TangSengDaoDaoServerLib/pkg/wkhttp"
+	"github.com/tangseng-vge/TangSengDaoDaoServerLib/common"
+	"github.com/tangseng-vge/TangSengDaoDaoServerLib/config"
+	"github.com/tangseng-vge/TangSengDaoDaoServerLib/pkg/wkhttp"
 	"go.uber.org/zap"
 )
 

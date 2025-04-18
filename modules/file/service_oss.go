@@ -5,9 +5,9 @@ import (
 	"io"
 	"net/url"
 
-	"github.com/TangSengDaoDao/TangSengDaoDaoServerLib/config"
-	"github.com/TangSengDaoDao/TangSengDaoDaoServerLib/pkg/log"
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
+	"github.com/tangseng-vge/TangSengDaoDaoServerLib/config"
+	"github.com/tangseng-vge/TangSengDaoDaoServerLib/pkg/log"
 	"go.uber.org/zap"
 )
 

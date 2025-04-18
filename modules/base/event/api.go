@@ -4,13 +4,13 @@ import (
 	"fmt"
 
 	"github.com/TangSengDaoDao/TangSengDaoDaoServer/modules/file"
-	"github.com/TangSengDaoDao/TangSengDaoDaoServerLib/config"
-	"github.com/TangSengDaoDao/TangSengDaoDaoServerLib/pkg/log"
-	"github.com/TangSengDaoDao/TangSengDaoDaoServerLib/pkg/util"
 	"github.com/gocraft/dbr/v2"
+	"github.com/tangseng-vge/TangSengDaoDaoServerLib/config"
+	"github.com/tangseng-vge/TangSengDaoDaoServerLib/pkg/log"
+	"github.com/tangseng-vge/TangSengDaoDaoServerLib/pkg/util"
 	"go.uber.org/zap"
 
-	et "github.com/TangSengDaoDao/TangSengDaoDaoServerLib/pkg/wkevent"
+	et "github.com/tangseng-vge/TangSengDaoDaoServerLib/pkg/wkevent"
 )
 
 const (

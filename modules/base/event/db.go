@@ -3,10 +3,10 @@ package event
 import (
 	"time"
 
-	"github.com/TangSengDaoDao/TangSengDaoDaoServerLib/pkg/db"
-	"github.com/TangSengDaoDao/TangSengDaoDaoServerLib/pkg/util"
-	"github.com/TangSengDaoDao/TangSengDaoDaoServerLib/pkg/wkevent"
 	"github.com/gocraft/dbr/v2"
+	"github.com/tangseng-vge/TangSengDaoDaoServerLib/pkg/db"
+	"github.com/tangseng-vge/TangSengDaoDaoServerLib/pkg/util"
+	"github.com/tangseng-vge/TangSengDaoDaoServerLib/pkg/wkevent"
 )
 
 // DB 事件的db

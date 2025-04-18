@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/TangSengDaoDao/TangSengDaoDaoServerLib/pkg/util"
-	"github.com/TangSengDaoDao/TangSengDaoDaoServerLib/pkg/wkhttp"
 	"github.com/pkg/errors"
+	"github.com/tangseng-vge/TangSengDaoDaoServerLib/pkg/util"
+	"github.com/tangseng-vge/TangSengDaoDaoServerLib/pkg/wkhttp"
 	"go.uber.org/zap"
 )
 

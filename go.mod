@@ -4,7 +4,6 @@ go 1.20
 
 require (
 	firebase.google.com/go/v4 v4.13.0
-	github.com/TangSengDaoDao/TangSengDaoDaoServerLib v1.0.9-0.20250225135144-a4930f6f4252
 	github.com/alibabacloud-go/darabonba-openapi v0.2.1
 	github.com/alibabacloud-go/sms-intl-20180501 v1.0.1
 	github.com/alibabacloud-go/tea v1.2.1
@@ -34,6 +33,7 @@ require (
 	github.com/sourcegraph/syntaxhighlight v0.0.0-20170531221838-bd320f5d308e
 	github.com/spf13/viper v1.16.0
 	github.com/stretchr/testify v1.8.3
+	github.com/tangseng-vge/TangSengDaoDaoServerLib v1.0.9
 	github.com/tidwall/gjson v1.15.0
 	go.uber.org/zap v1.24.0
 	golang.org/x/crypto v0.14.0
@@ -167,4 +167,4 @@ require (
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
 
-// replace github.com/TangSengDaoDao/TangSengDaoDaoServerLib => ../TangSengDaoDaoServerLib
+// replace github.com/tangseng-vge/TangSengDaoDaoServerLib => ../TangSengDaoDaoServerLib

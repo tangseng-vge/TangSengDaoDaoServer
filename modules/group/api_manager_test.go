@@ -7,8 +7,8 @@ import (
 	"testing"
 
 	"github.com/TangSengDaoDao/TangSengDaoDaoServer/modules/user"
-	"github.com/TangSengDaoDao/TangSengDaoDaoServerLib/testutil"
 	"github.com/stretchr/testify/assert"
+	"github.com/tangseng-vge/TangSengDaoDaoServerLib/testutil"
 )
 
 func TestGroupList(t *testing.T) {

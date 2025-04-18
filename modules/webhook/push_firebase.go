@@ -8,8 +8,8 @@ import (
 	"firebase.google.com/go/v4/messaging"
 	message "firebase.google.com/go/v4/messaging"
 	"github.com/TangSengDaoDao/TangSengDaoDaoServer/modules/user"
-	"github.com/TangSengDaoDao/TangSengDaoDaoServerLib/config"
-	"github.com/TangSengDaoDao/TangSengDaoDaoServerLib/pkg/log"
+	"github.com/tangseng-vge/TangSengDaoDaoServerLib/config"
+	"github.com/tangseng-vge/TangSengDaoDaoServerLib/pkg/log"
 	"google.golang.org/api/option"
 )
 

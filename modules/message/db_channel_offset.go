@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"hash/crc32"
 
-	"github.com/TangSengDaoDao/TangSengDaoDaoServerLib/config"
-	"github.com/TangSengDaoDao/TangSengDaoDaoServerLib/pkg/db"
 	"github.com/gocraft/dbr/v2"
+	"github.com/tangseng-vge/TangSengDaoDaoServerLib/config"
+	"github.com/tangseng-vge/TangSengDaoDaoServerLib/pkg/db"
 )
 
 type channelOffsetDB struct {
