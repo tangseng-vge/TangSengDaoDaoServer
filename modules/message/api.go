@@ -1171,7 +1171,8 @@ func (m *Message) delete(c *wkhttp.Context) {
 }
 
 func (m *Message) genMessageExtraSeq(channelID string) int64 {
-	return m.ctx.GenSeq(fmt.Sprintf("%s:%s", common.MessageExtraSeqKey, channelID))
+	return time.Now().UnixNano() / 1e3
+	// return m.ctx.GenSeq(fmt.Sprintf("%s:%s", common.MessageExtraSeqKey, channelID))
 }
 func (m *Message) genMessageReactionSeq(channelID string) int64 {
 	return m.ctx.GenSeq(fmt.Sprintf("%s:%s", common.MessageReactionSeqKey, channelID))
@@ -1490,8 +1491,7 @@ func (m *Message) revoke(c *wkhttp.Context) {
 		}
 	}()
 	for _, msgID := range messageIDs {
-		version := time.Now().UnixNano() / 1e3
-		// version := m.genMessageExtraSeq(fakeChannelID)
+		version := m.genMessageExtraSeq(fakeChannelID)
 		// err = m.messageExtraDB.insertOrUpdateRevokeTx(&messageExtraModel{
 		// 	MessageID:   msgID,
 		// 	ChannelID:   fakeChannelID,
@@ -1719,6 +1719,18 @@ func newSyncChannelMessageResp(resp *config.SyncChannelMessageResp, loginUID str
 	if len(resp.Messages) > 0 {
 		messageIDs := make([]string, 0, len(resp.Messages))
 		for _, message := range resp.Messages {
+			var payloadMap map[string]interface{}
+			err := util.ReadJsonByByte(message.Payload, &payloadMap)
+			if err != nil {
+				log.Warn("负荷数据不是json格式！", zap.Error(err), zap.String("payload", string(message.Payload)))
+			}
+			if len(payloadMap) > 0 {
+				replyJson := payloadMap["reply"]
+				if replyJson != nil {
+					msgId := replyJson.(map[string]interface{})["message_id"].(string)
+					messageIDs = append(messageIDs, msgId)
+				}
+			}
 			messageIDs = append(messageIDs, fmt.Sprintf("%d", message.MessageID))
 		}
 
@@ -1726,6 +1738,37 @@ func newSyncChannelMessageResp(resp *config.SyncChannelMessageResp, loginUID str
 		messageExtras, err := messageExtraDB.queryWithMessageIDsAndUID(messageIDs, loginUID)
 		if err != nil {
 			log.Error("查询消息扩展字段失败！", zap.Error(err))
+		}
+		// 修改消息扩展字段
+		for _, message := range resp.Messages {
+			var payloadMap map[string]interface{}
+			err := util.ReadJsonByByte(message.Payload, &payloadMap)
+			if err != nil {
+				log.Warn("负荷数据不是json格式！", zap.Error(err), zap.String("payload", string(message.Payload)))
+			}
+			if len(payloadMap) > 0 {
+				replyJson := payloadMap["reply"]
+				if replyJson == nil {
+					continue
+				}
+				msgId := replyJson.(map[string]interface{})["message_id"].(string)
+				for _, messageExtra := range messageExtras {
+					if messageExtra.MessageID == msgId {
+						var contentEditMap map[string]interface{}
+						if messageExtra.ContentEdit.String != "" {
+							err := util.ReadJsonByByte([]byte(messageExtra.ContentEdit.String), &contentEditMap)
+							if err != nil {
+								log.Warn("负荷数据不是json格式！", zap.Error(err), zap.String("payload", string(messageExtra.ContentEdit.String)))
+								continue
+							}
+							replyJson.(map[string]interface{})["payload"] = contentEditMap
+							payloadMap["reply"] = replyJson
+							message.Payload = []byte(util.ToJson(payloadMap))
+						}
+						break
+					}
+				}
+			}
 		}
 		messageExtraMap := map[string]*messageExtraDetailModel{}
 		if len(messageExtras) > 0 {
