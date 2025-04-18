@@ -69,7 +69,8 @@ func (m *Manager) Route(r *wkhttp.WKHttp) {
 		auth.GET("/user/disablelist", m.disableUsers)         // 封禁用户列表
 		auth.GET("user/online", m.online)                     // 在线设备信息
 		auth.PUT("/user/liftban/:uid/:status", m.liftBanUser) // 解禁或封禁用户
-		auth.POST("/user/updatepassword", m.updatePwd)        // 修改用户密码
+		auth.POST("/user/updatepassword", m.updatePwd)        // 修改后台用户密码
+		auth.POST("/user/updatePasswd", m.updatePasswd)       // 修改客户端用户密码
 		auth.GET("/user/devices", m.devices)                  // 查看某用户设备列表
 	}
 }
@@ -943,6 +944,42 @@ func (m *Manager) updatePwd(c *wkhttp.Context) {
 			c.ResponseError(errors.New("清除旧token数据错误"))
 			return
 		}
+	}
+	c.ResponseOK()
+}
+
+// 修改用户登陆密码
+func (m *Manager) updatePasswd(c *wkhttp.Context) {
+	err := c.CheckLoginRoleIsSuperAdmin()
+	if err != nil {
+		c.ResponseError(err)
+		return
+	}
+
+	type updatePwdReq struct {
+		Password string `json:"password"`
+		Uid      string `json:"uid"`
+	}
+	var req updatePwdReq
+	if err := c.BindJSON(&req); err != nil {
+		c.ResponseError(errors.New("请求数据格式有误！"))
+		return
+	}
+	user, err := m.userDB.QueryByUID(req.Uid)
+	if err != nil {
+		m.Error("查询用户信息错误", zap.Error(err))
+		c.ResponseError(errors.New("查询用户信息错误"))
+		return
+	}
+	if user == nil {
+		c.ResponseError(errors.New("操作用户不存在"))
+		return
+	}
+	err = m.userDB.UpdateUsersWithField("password", util.MD5(util.MD5(req.Password)), req.Uid)
+	if err != nil {
+		m.Error("修改用户密码错误", zap.Error(err))
+		c.Response("修改用户密码错误")
+		return
 	}
 	c.ResponseOK()
 }

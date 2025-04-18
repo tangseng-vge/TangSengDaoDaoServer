@@ -204,6 +204,16 @@ func (m *Manager) updateConfig(c *wkhttp.Context) {
 		RegisterUserMustCompleteInfoOn int    `json:"register_user_must_complete_info_on"` // 注册用户必须填写完整信息
 		ChannelPinnedMessageMaxCount   int    `json:"channel_pinned_message_max_count"`    // 频道置顶消息最大数量
 		CanModifyApiUrl                int    `json:"can_modify_api_url"`                  // 是否可以修改api地址
+		ApiAddr                        int    `json:"api_addr"`                            // 是否可以修改api地址
+		ApiAddrJw                      int    `json:"api_addr_jw"`                         // 是否可以修改api地址
+		WebAddr                        int    `json:"web_addr"`                            // 是否可以修改api地址
+		WebAddrJw                      int    `json:"web_addr_jw"`                         // 是否可以修改api地址
+		WsAddr                         int    `json:"ws_addr"`                             // 是否可以修改api地址
+		WsAddrJw                       int    `json:"ws_addr_jw"`                          // 是否可以修改api地址
+		WssAddr                        int    `json:"wss_addr"`                            // 是否可以修改api地址
+		WssAddrJw                      int    `json:"wss_addr_jw"`                         // 是否可以修改api地址
+		SocketAddr                     int    `json:"socket_addr"`                         // 是否可以修改api地址
+		SocketAddrJw                   int    `json:"socket_addr_jw"`                      // 是否可以修改api地址
 	}
 	var req reqVO
 	if err := c.BindJSON(&req); err != nil {
@@ -227,6 +237,17 @@ func (m *Manager) updateConfig(c *wkhttp.Context) {
 	configMap["register_user_must_complete_info_on"] = req.RegisterUserMustCompleteInfoOn
 	configMap["channel_pinned_message_max_count"] = req.ChannelPinnedMessageMaxCount
 	configMap["can_modify_api_url"] = req.CanModifyApiUrl
+	configMap["api_addr"] = req.ApiAddr
+	configMap["api_addr_jw"] = req.ApiAddrJw
+	configMap["web_addr"] = req.WebAddr
+	configMap["web_addr_jw"] = req.WebAddrJw
+	configMap["ws_addr"] = req.WsAddr
+	configMap["ws_addr_jw"] = req.WsAddrJw
+	configMap["wss_addr"] = req.WssAddr
+	configMap["wss_addr_jw"] = req.WssAddrJw
+	configMap["socket_addr"] = req.SocketAddr
+	configMap["socket_addr_jw"] = req.SocketAddrJw
+
 	err = m.appconfigDB.updateWithMap(configMap, appConfigM.Id)
 	if err != nil {
 		m.Error("修改app配置信息错误", zap.Error(err))
@@ -257,6 +278,17 @@ func (m *Manager) appconfig(c *wkhttp.Context) {
 	var registerUserMustCompleteInfoOn = 0
 	var channelPinnedMessageMaxCount = 10
 	var canModifyApiUrl = 0
+	var api_addr = ""
+	var api_addr_jw = ""
+	var web_addr = ""
+	var web_addr_jw = ""
+	var ws_addr = ""
+	var ws_addr_jw = ""
+	var wss_addr = ""
+	var wss_addr_jw = ""
+	var socket_addr = ""
+	var socket_addr_jw = ""
+
 	if appconfig != nil {
 		revokeSecond = appconfig.RevokeSecond
 		welcomeMessage = appconfig.WelcomeMessage
@@ -268,6 +300,16 @@ func (m *Manager) appconfig(c *wkhttp.Context) {
 		registerUserMustCompleteInfoOn = appconfig.RegisterUserMustCompleteInfoOn
 		channelPinnedMessageMaxCount = appconfig.ChannelPinnedMessageMaxCount
 		canModifyApiUrl = appconfig.CanModifyApiUrl
+		api_addr = appconfig.ApiAddr
+		api_addr_jw = appconfig.ApiAddrJw
+		web_addr = appconfig.WebAddr
+		web_addr_jw = appconfig.WebAddrJw
+		ws_addr = appconfig.WsAddr
+		ws_addr_jw = appconfig.WsAddrJw
+		wss_addr = appconfig.WssAddr
+		wss_addr_jw = appconfig.WssAddrJw
+		socket_addr = appconfig.SocketAddr
+		socket_addr_jw = appconfig.SocketAddrJw
 	}
 	if revokeSecond == 0 {
 		revokeSecond = 120
@@ -286,6 +328,16 @@ func (m *Manager) appconfig(c *wkhttp.Context) {
 		RegisterUserMustCompleteInfoOn: registerUserMustCompleteInfoOn,
 		ChannelPinnedMessageMaxCount:   channelPinnedMessageMaxCount,
 		CanModifyApiUrl:                canModifyApiUrl,
+		ApiAddr:                        api_addr,
+		ApiAddrJw:                      api_addr_jw,
+		WebAddr:                        web_addr,
+		WebAddrJw:                      web_addr_jw,
+		WsAddr:                         ws_addr,
+		WsAddrJw:                       ws_addr_jw,
+		WssAddr:                        wss_addr,
+		WssAddrJw:                      wss_addr_jw,
+		SocketAddr:                     socket_addr,
+		SocketAddrJw:                   socket_addr_jw,
 	})
 }
 
@@ -300,6 +352,16 @@ type managerAppConfigResp struct {
 	RegisterUserMustCompleteInfoOn int    `json:"register_user_must_complete_info_on"` // 注册用户必须填写完整信息
 	ChannelPinnedMessageMaxCount   int    `json:"channel_pinned_message_max_count"`    // 频道置顶消息最大数量
 	CanModifyApiUrl                int    `json:"can_modify_api_url"`                  // 是否可以修改api地址
+	ApiAddr                        string `json:"api_addr"`
+	ApiAddrJw                      string `json:"api_addr_jw"`
+	WebAddr                        string `json:"web_addr"`
+	WebAddrJw                      string `json:"web_addr_jw"`
+	WsAddr                         string `json:"ws_addr"`
+	WsAddrJw                       string `json:"ws_addr_jw"`
+	WssAddr                        string `json:"wss_addr"`
+	WssAddrJw                      string `json:"wss_addr_jw"`
+	SocketAddr                     string `json:"socket_addr"`
+	SocketAddrJw                   string `json:"socket_addr_jw"`
 }
 
 type managerAppModule struct {

@@ -474,6 +474,7 @@ func (u *User) uploadAvatar(c *wkhttp.Context) {
 }
 
 // 获取用户的IM连接地址
+// fixme socket或websocket
 func (u *User) userIM(c *wkhttp.Context) {
 	uid := c.Param("uid")
 	resp, err := network.Get(fmt.Sprintf("%s/route?uid=%s", u.ctx.GetConfig().WuKongIM.APIURL, uid), nil, nil)
@@ -975,6 +976,7 @@ func (u *User) login(c *wkhttp.Context) {
 		c.ResponseError(errors.New("此账号不允许登录"))
 		return
 	}
+	// todo 修改密码
 	if util.MD5(util.MD5(req.Password)) != userInfo.Password {
 		c.ResponseError(errors.New("密码不正确！"))
 		return

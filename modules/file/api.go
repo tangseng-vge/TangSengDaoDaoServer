@@ -92,6 +92,7 @@ func (f *File) getFilePath(c *wkhttp.Context) {
 		return
 	}
 	var path string
+	// FIXME 发送图片会显示真实ip地址
 	if Type(fileType) == TypeMomentCover {
 		// 动态封面
 		path = fmt.Sprintf("%s/file/upload?type=%s&path=/%s.png", f.ctx.GetConfig().External.APIBaseURL, fileType, loginUID)
