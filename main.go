@@ -142,7 +142,7 @@ tttttttttttttttttttttttttttttttttttttttt
 [43C[0m-------------------------[0m 
 [43C[0m[1m[33mMode[0m[0m:[0m #mode#[0m 
 [43C[0m[1m[33mConfig[0m[0m:[0m #configPath#[0m 
-[43C[0m[1m[33mApp name[0m[0m:[0m #appname#[0m 
+[43C[0m[1m[33mApp name[0m[0m:[0m MVC[0m 
 [43C[0m[1m[33mVersion[0m[0m:[0m #version#[0m 
 [43C[0m[1m[33mGit[0m[0m:[0m #git#[0m 
 [43C[0m[1m[33mGo build[0m[0m:[0m #gobuild#[0m 
