@@ -13,6 +13,7 @@ import (
 	"strconv"
 	"time"
 
+	utils "github.com/TangSengDaoDao/TangSengDaoDaoServer/pkg/util"
 	"github.com/gin-gonic/gin"
 	"github.com/tangseng-vge/TangSengDaoDaoServerLib/config"
 	"github.com/tangseng-vge/TangSengDaoDaoServerLib/pkg/log"
@@ -323,11 +324,20 @@ func (cn *Common) appConfig(c *wkhttp.Context) {
 		revokeSecond = appConfigM.RevokeSecond
 	}
 
+	//  根据请求地址不同 获取不同weburl
+	ip := utils.GetClientPublicIP(c.Request)
+	area := utils.GetInstance().GetArea(ip)
+	var WebURL = ""
+	if "CN" != area {
+		WebURL = appConfigM.WebAddr
+	} else {
+		WebURL = appConfigM.WebAddrJw
+	}
 	c.JSON(http.StatusOK, &appConfigResp{
 		Version:                        appConfigM.Version,
 		PhoneSearchOff:                 phoneSearchOff,
 		ShortnoEditOff:                 shortnoEditOff,
-		WebURL:                         cn.ctx.GetConfig().External.WebLoginURL,
+		WebURL:                         WebURL,
 		RevokeSecond:                   revokeSecond,
 		RegisterInviteOn:               appConfigM.RegisterInviteOn,
 		SendWelcomeMessageOn:           appConfigM.SendWelcomeMessageOn,

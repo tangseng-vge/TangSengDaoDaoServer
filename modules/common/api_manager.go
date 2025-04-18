@@ -204,16 +204,16 @@ func (m *Manager) updateConfig(c *wkhttp.Context) {
 		RegisterUserMustCompleteInfoOn int    `json:"register_user_must_complete_info_on"` // 注册用户必须填写完整信息
 		ChannelPinnedMessageMaxCount   int    `json:"channel_pinned_message_max_count"`    // 频道置顶消息最大数量
 		CanModifyApiUrl                int    `json:"can_modify_api_url"`                  // 是否可以修改api地址
-		ApiAddr                        int    `json:"api_addr"`                            // 是否可以修改api地址
-		ApiAddrJw                      int    `json:"api_addr_jw"`                         // 是否可以修改api地址
-		WebAddr                        int    `json:"web_addr"`                            // 是否可以修改api地址
-		WebAddrJw                      int    `json:"web_addr_jw"`                         // 是否可以修改api地址
-		WsAddr                         int    `json:"ws_addr"`                             // 是否可以修改api地址
-		WsAddrJw                       int    `json:"ws_addr_jw"`                          // 是否可以修改api地址
-		WssAddr                        int    `json:"wss_addr"`                            // 是否可以修改api地址
-		WssAddrJw                      int    `json:"wss_addr_jw"`                         // 是否可以修改api地址
-		SocketAddr                     int    `json:"socket_addr"`                         // 是否可以修改api地址
-		SocketAddrJw                   int    `json:"socket_addr_jw"`                      // 是否可以修改api地址
+		ApiAddr                        string `json:"api_addr"`                            // 是否可以修改api地址
+		ApiAddrJw                      string `json:"api_addr_jw"`                         // 是否可以修改api地址
+		WebAddr                        string `json:"web_addr"`                            // 是否可以修改api地址
+		WebAddrJw                      string `json:"web_addr_jw"`                         // 是否可以修改api地址
+		WsAddr                         string `json:"ws_addr"`                             // 是否可以修改api地址
+		WsAddrJw                       string `json:"ws_addr_jw"`                          // 是否可以修改api地址
+		WssAddr                        string `json:"wss_addr"`                            // 是否可以修改api地址
+		WssAddrJw                      string `json:"wss_addr_jw"`                         // 是否可以修改api地址
+		SocketAddr                     string `json:"socket_addr"`                         // 是否可以修改api地址
+		SocketAddrJw                   string `json:"socket_addr_jw"`                      // 是否可以修改api地址
 	}
 	var req reqVO
 	if err := c.BindJSON(&req); err != nil {

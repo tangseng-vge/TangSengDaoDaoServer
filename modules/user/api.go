@@ -29,6 +29,7 @@ import (
 	commonapi "github.com/TangSengDaoDao/TangSengDaoDaoServer/modules/base/common"
 	"github.com/TangSengDaoDao/TangSengDaoDaoServer/modules/base/event"
 	common2 "github.com/TangSengDaoDao/TangSengDaoDaoServer/modules/common"
+	utils "github.com/TangSengDaoDao/TangSengDaoDaoServer/pkg/util"
 	"github.com/gin-gonic/gin"
 	"github.com/pkg/errors"
 	"github.com/tangseng-vge/TangSengDaoDaoServerLib/common"
@@ -61,6 +62,7 @@ type User struct {
 	onlineService *OnlineService
 	giteeDB       *giteeDB
 	githubDB      *githubDB
+	appConfig     *AppConfig
 
 	setting *Setting
 	log.Log
@@ -77,6 +79,12 @@ type User struct {
 	deviceFlagDB             *deviceFlagDB
 	deviceFlagsCache         []*deviceFlagModel
 	appService               app.IService
+}
+
+type AppConfig struct {
+	ctx *config.Context
+	log.Log
+	appConfigDB *appConfigDB
 }
 
 // New New
@@ -474,7 +482,6 @@ func (u *User) uploadAvatar(c *wkhttp.Context) {
 }
 
 // 获取用户的IM连接地址
-// fixme socket或websocket
 func (u *User) userIM(c *wkhttp.Context) {
 	uid := c.Param("uid")
 	resp, err := network.Get(fmt.Sprintf("%s/route?uid=%s", u.ctx.GetConfig().WuKongIM.APIURL, uid), nil, nil)
@@ -484,11 +491,44 @@ func (u *User) userIM(c *wkhttp.Context) {
 		return
 	}
 	var resultMap map[string]interface{}
+	// 获取当前客户IP
+	ip := utils.GetClientPublicIP(c.Request)
+	area := utils.GetInstance().GetArea(ip)
+
+	appConfigM, err := u.appConfig.appConfigDB.query()
+	if err != nil {
+		u.Error("读取上传配置失败！", zap.Error(err))
+		c.ResponseError(errors.New("读取上传配置失败！"))
+		return
+	}
+	if appConfigM == nil {
+		u.Error("读取上传配置失败1！", zap.Error(err))
+		c.ResponseError(errors.New("读取上传配置失败1！"))
+	}
+
+	var tcpAddress = ""
+	var wsAddress = ""
+	var wssAddress = ""
+	//  socket或websocket
+	if "CN" != area {
+		tcpAddress = appConfigM.SocketAddr
+		wsAddress = appConfigM.WsAddr
+		wssAddress = appConfigM.WssAddr
+	} else {
+		tcpAddress = appConfigM.SocketAddr
+		wsAddress = appConfigM.WsAddr
+		wssAddress = appConfigM.WssAddr
+	}
 	err = util.ReadJsonByByte([]byte(resp.Body), &resultMap)
 	if err != nil {
 		c.ResponseError(err)
 		return
 	}
+	// 修改resultMap中的地址数据
+	resultMap["tcp_addr"] = tcpAddress
+	resultMap["ws_addr"] = wsAddress
+	resultMap["wss_addr"] = wssAddress
+
 	c.JSON(resp.StatusCode, resultMap)
 }
 

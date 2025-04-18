@@ -20,8 +20,8 @@ const (
 var systemRobotMap = []*systemRobotMenu{
 	{
 		CMD:          "/基本信息",
-		Remark:       "唐僧叨叨基本信息",
-		ReplyContent: "唐僧叨叨是一款轻量级，高性能，重安全专注于私有化部署的开源即时通讯系统。唐僧叨叨官网：https://www.tsdaodao.com 各端演示地址：https://tsdaodao.com/guide/demo.html 悟空官网：https://githubim.com 在APP我的-设置-模块管理中关闭所有模块即是开源版本所有功能。",
+		Remark:       "MVC基本信息",
+		ReplyContent: "MVC是一款轻量级，高性能，重安全的即时通讯系统。",
 		Type:         string(None),
 	},
 	{
@@ -50,16 +50,16 @@ var systemRobotMap = []*systemRobotMenu{
 	},
 	{
 		CMD:          "/Android包下载",
-		Remark:       "如何下载唐僧叨叨 Android包",
-		ReplyContent: "您好，唐僧叨叨 Android应用下载地址 https://www.pgyer.com/tsdd",
+		Remark:       "如何下载MVC Android包",
+		ReplyContent: "您好，MVC Android应用下载地址 暂未开放",
 		Type:         string(None),
 	},
-	// {
-	// 	CMD:          "/解密失败",
-	// 	Remark:       "收到消息提示【消息解密失败，无法查看】",
-	// 	ReplyContent: "您好，消息解密失败是因为您和对方之间有谁卸载重装了软件，或者更换了聊天设备，导致密钥不再配对，解密不了消息。对此需要您和你的好友双方互发一条消息且双方都收到，完成密钥更新后就能正常聊天了",
-	// 	Type:         string(None),
-	// },
+	{
+		CMD:          "/解密失败",
+		Remark:       "收到消息提示【消息解密失败，无法查看】",
+		ReplyContent: "您好，消息解密失败是因为您和对方之间有谁卸载重装了软件，或者更换了聊天设备，导致密钥不再配对，解密不了消息。对此需要您和你的好友双方互发一条消息且双方都收到，完成密钥更新后就能正常聊天了",
+		Type:         string(None),
+	},
 	{
 		CMD:          "/未知消息",
 		Remark:       "收到消息提示【未知消息，请升级客户端后查看】",

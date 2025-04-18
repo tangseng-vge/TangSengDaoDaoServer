@@ -3,13 +3,14 @@ package file
 import (
 	"crypto/sha512"
 	"encoding/base64"
+	"fmt"
+	"github.com/TangSengDaoDao/TangSengDaoDaoServer/pkg/util"
+	"github.com/stretchr/testify/assert"
 	"image/png"
 	"io"
 	"io/ioutil"
 	"os"
 	"testing"
-
-	"github.com/stretchr/testify/assert"
 )
 
 func TestMakeCompose(t *testing.T) {
@@ -62,4 +63,15 @@ func TestUploadPCFile(t *testing.T) {
 	encoded := base64.StdEncoding.EncodeToString(hash[:])
 	println("编码结果")
 	println(encoded)
+}
+
+func TestArea(t *testing.T) {
+
+	instance := util.GetInstance()
+	//var ipaddr = "23.94.66.48"
+	var ipaddr = "8.134.112.131"
+	area := instance.Get(ipaddr)
+	fmt.Println("area " + area)
+	getArea := instance.GetArea(ipaddr)
+	fmt.Println("area " + getArea)
 }
