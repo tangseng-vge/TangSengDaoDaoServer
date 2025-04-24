@@ -42,7 +42,7 @@ func newService(ctx *config.Context) *service {
 
 	return &service{
 		ctx:         ctx,
-		appConfigDB: newAppConfigDB(ctx),
+		appConfigDB: NewAppConfigDB(ctx),
 		shortnoDB:   newShortnoDB(ctx),
 	}
 }

@@ -24,7 +24,7 @@ func NewManager(ctx *config.Context) *Manager {
 		ctx:         ctx,
 		Log:         log.NewTLog("commonManager"),
 		db:          newDB(ctx.DB()),
-		appconfigDB: newAppConfigDB(ctx),
+		appconfigDB: NewAppConfigDB(ctx),
 	}
 }
 
