@@ -27,7 +27,7 @@ type Common struct {
 	ctx *config.Context
 	log.Log
 	db          *db
-	appConfigDB *appConfigDB
+	appConfigDB *AppConfigDb
 }
 
 // New New
@@ -35,7 +35,7 @@ func New(ctx *config.Context) *Common {
 	return &Common{
 		ctx:         ctx,
 		db:          newDB(ctx.DB()),
-		appConfigDB: newAppConfigDB(ctx),
+		appConfigDB: NewAppConfigDB(ctx),
 		Log:         log.NewTLog("common"),
 	}
 }
@@ -241,12 +241,12 @@ func (cn *Common) chatBgList(c *wkhttp.Context) {
 }
 func (cn *Common) insertAppConfigIfNeed() (*appConfigModel, error) {
 
-	appConfigM, err := cn.appConfigDB.query()
+	appConfigM, err := cn.appConfigDB.Query()
 	if err != nil {
 		return nil, err
 	}
 	if appConfigM != nil {
-		return appConfigM, nil
+		return (*appConfigModel)(appConfigM), nil
 	}
 
 	privateKeyBuff := new(bytes.Buffer)
@@ -296,7 +296,7 @@ func (cn *Common) insertAppConfigIfNeed() (*appConfigModel, error) {
 
 func (cn *Common) appConfig(c *wkhttp.Context) {
 	versionStr := c.Query("version")
-	appConfigM, err := cn.appConfigDB.query()
+	appConfigM, err := cn.appConfigDB.Query()
 	if err != nil {
 		cn.Error("查询应用配置失败！", zap.Error(err))
 		c.ResponseError(errors.New("查询应用配置失败！"))

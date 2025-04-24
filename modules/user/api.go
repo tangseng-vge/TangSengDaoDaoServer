@@ -62,7 +62,7 @@ type User struct {
 	onlineService *OnlineService
 	giteeDB       *giteeDB
 	githubDB      *githubDB
-	appConfigDB   *appConfigDB
+	appConfigDB   *common2.AppConfigDb
 
 	setting *Setting
 	log.Log
@@ -92,7 +92,7 @@ func New(ctx *config.Context) *User {
 	u := &User{
 		ctx:                      ctx,
 		db:                       NewDB(ctx),
-		appConfigDB:              newAppConfigDB(ctx),
+		appConfigDB:              common2.NewAppConfigDB(ctx),
 		deviceDB:                 newDeviceDB(ctx),
 		friendDB:                 newFriendDB(ctx),
 		smsServie:                commonapi.NewSMSService(ctx),
@@ -496,7 +496,7 @@ func (u *User) userIM(c *wkhttp.Context) {
 	ip := utils.GetClientPublicIP(c.Request)
 	area := utils.GetInstance().GetArea(ip)
 
-	appConfigM, err := u.appConfigDB.query()
+	appConfigM, err := u.appConfigDB.Query()
 	if err != nil {
 		u.Error("读取上传配置失败！", zap.Error(err))
 		c.ResponseError(errors.New("读取上传配置失败！"))
@@ -548,8 +548,28 @@ func (u *User) qrcodeMy(c *wkhttp.Context) {
 		return
 	}
 	path := strings.ReplaceAll(u.ctx.GetConfig().QRCodeInfoURL, ":code", fmt.Sprintf("vercode_%s", userModel.QRVercode))
+	appConfigM, err := u.appConfigDB.Query()
+	if err != nil {
+		u.Error("读取上传配置失败！", zap.Error(err))
+		c.ResponseError(errors.New("读取上传配置失败！"))
+		return
+	}
+	if appConfigM == nil {
+		u.Error("读取上传配置失败1！", zap.Error(err))
+		c.ResponseError(errors.New("读取上传配置失败1！"))
+	}
+
+	// 获取当前客户IP
+	ip := utils.GetClientPublicIP(c.Request)
+	area := utils.GetInstance().GetArea(ip)
+	var BASEURLL = ""
+	if "CN" != area {
+		BASEURLL = appConfigM.ApiAddrJw
+	} else {
+		BASEURLL = appConfigM.ApiAddr
+	}
 	c.Response(gin.H{
-		"data": fmt.Sprintf("%s/%s", u.ctx.GetConfig().External.BaseURL, path),
+		"data": fmt.Sprintf("%s/v1/%s", BASEURLL, path),
 	})
 }
 
@@ -1454,9 +1474,31 @@ func (u *User) getLoginUUID(c *wkhttp.Context) {
 			return
 		}
 	}
+	appConfigM, err := u.appConfigDB.Query()
+	if err != nil {
+		u.Error("读取上传配置失败！", zap.Error(err))
+		c.ResponseError(errors.New("读取上传配置失败！"))
+		return
+	}
+	if appConfigM == nil {
+		u.Error("读取上传配置失败1！", zap.Error(err))
+		c.ResponseError(errors.New("读取上传配置失败1！"))
+	}
+
+	// 获取当前客户IP
+	ip := utils.GetClientPublicIP(c.Request)
+	area := utils.GetInstance().GetArea(ip)
+	var BASEURLL = ""
+	if "CN" != area {
+		BASEURLL = appConfigM.ApiAddrJw
+	} else {
+		BASEURLL = appConfigM.ApiAddr
+	}
+
+	//  二维码包含服务器IP
 	c.JSON(http.StatusOK, gin.H{
 		"uuid":   uuid,
-		"qrcode": fmt.Sprintf("%s/%s", u.ctx.GetConfig().External.BaseURL, strings.ReplaceAll(u.ctx.GetConfig().QRCodeInfoURL, ":code", uuid)),
+		"qrcode": fmt.Sprintf("%s/v1/%s", BASEURLL, strings.ReplaceAll(u.ctx.GetConfig().QRCodeInfoURL, ":code", uuid)),
 	})
 }
 

@@ -5,6 +5,7 @@ import (
 	"encoding/base64"
 	"errors"
 	"fmt"
+	"github.com/TangSengDaoDao/TangSengDaoDaoServer/modules/common"
 	utils "github.com/TangSengDaoDao/TangSengDaoDaoServer/pkg/util"
 	"github.com/gin-gonic/gin"
 	"github.com/tangseng-vge/TangSengDaoDaoServerLib/config"
@@ -23,7 +24,7 @@ type File struct {
 	ctx *config.Context
 	log.Log
 	service     IService
-	appConfigDB *appConfigDB
+	appConfigDB *common.AppConfigDb
 }
 
 type AppConfig struct {
@@ -37,7 +38,7 @@ func New(ctx *config.Context) *File {
 		ctx:         ctx,
 		Log:         log.NewTLog("File"),
 		service:     NewService(ctx),
-		appConfigDB: newAppConfigDB(ctx),
+		appConfigDB: common.NewAppConfigDB(ctx),
 	}
 }
 
@@ -100,7 +101,7 @@ func (f *File) getFilePath(c *wkhttp.Context) {
 	}
 	var path string
 	//  发送图片会显示真实ip地址
-	appConfigM, err := f.appConfigDB.query()
+	appConfigM, err := f.appConfigDB.Query()
 	if err != nil {
 		f.Error("读取上传配置失败！", zap.Error(err))
 		c.ResponseError(errors.New("读取上传配置失败！"))

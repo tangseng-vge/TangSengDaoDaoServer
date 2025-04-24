@@ -28,7 +28,7 @@ func NewService(ctx *config.Context) IService {
 
 type service struct {
 	ctx         *config.Context
-	appConfigDB *appConfigDB
+	appConfigDB *AppConfigDb
 	shortnoDB   *shortnoDB
 	shortnoLock sync.RWMutex
 }
@@ -49,7 +49,7 @@ func newService(ctx *config.Context) *service {
 
 // GetAppConfig GetAppConfig
 func (s *service) GetAppConfig() (*AppConfigResp, error) {
-	appConfigM, err := s.appConfigDB.query()
+	appConfigM, err := s.appConfigDB.Query()
 	if err != nil {
 		return nil, err
 	}

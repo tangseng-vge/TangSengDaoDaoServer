@@ -3,6 +3,7 @@ package group
 import (
 	"errors"
 	"fmt"
+	utils "github.com/TangSengDaoDao/TangSengDaoDaoServer/pkg/util"
 	"io"
 	"io/ioutil"
 	"net/http"
@@ -35,6 +36,7 @@ type Group struct {
 	log.Log
 	db            *DB
 	settingDB     *settingDB
+	appConfigDB   *common2.AppConfigDb
 	userDB        *user.DB
 	groupService  IService
 	fileService   file.IService
@@ -49,6 +51,7 @@ func New(ctx *config.Context) *Group {
 		Log:           log.NewTLog("Group"),
 		db:            NewDB(ctx),
 		userDB:        user.NewDB(ctx),
+		appConfigDB:   common2.NewAppConfigDB(ctx),
 		settingDB:     newSettingDB(ctx),
 		groupService:  NewService(ctx),
 		fileService:   file.NewService(ctx),
@@ -1548,9 +1551,30 @@ func (g *Group) groupQRCode(c *wkhttp.Context) {
 		c.ResponseError(errors.New("设置缓存失败！"))
 		return
 	}
+	appConfigM, err := g.appConfigDB.Query()
+	if err != nil {
+		g.Error("读取上传配置失败！", zap.Error(err))
+		c.ResponseError(errors.New("读取上传配置失败！"))
+		return
+	}
+	if appConfigM == nil {
+		g.Error("读取上传配置失败1！", zap.Error(err))
+		c.ResponseError(errors.New("读取上传配置失败1！"))
+	}
+
+	// 获取当前客户IP
+	ip := utils.GetClientPublicIP(c.Request)
+	area := utils.GetInstance().GetArea(ip)
+	var BASEURLL = ""
+	if "CN" != area {
+		BASEURLL = appConfigM.ApiAddrJw
+	} else {
+		BASEURLL = appConfigM.ApiAddr
+	}
+
 	c.Response(gin.H{
 		"day":    7,
-		"qrcode": fmt.Sprintf("%s/%s", g.ctx.GetConfig().External.BaseURL, strings.ReplaceAll(g.ctx.GetConfig().QRCodeInfoURL, ":code", uuid)),
+		"qrcode": fmt.Sprintf("%s/v1/%s", BASEURLL, strings.ReplaceAll(g.ctx.GetConfig().QRCodeInfoURL, ":code", uuid)),
 		"expire": time.Now().Add(time.Hour * 24 * 7).Format("01月02日"),
 	})
 

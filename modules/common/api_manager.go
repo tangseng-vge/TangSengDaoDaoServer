@@ -15,7 +15,7 @@ type Manager struct {
 	ctx *config.Context
 	log.Log
 	db          *db
-	appconfigDB *appConfigDB
+	appconfigDB *AppConfigDb
 }
 
 // NewManager NewManager
@@ -220,7 +220,7 @@ func (m *Manager) updateConfig(c *wkhttp.Context) {
 		c.ResponseError(errors.New("请求数据格式有误！"))
 		return
 	}
-	appConfigM, err := m.appconfigDB.query()
+	appConfigM, err := m.appconfigDB.Query()
 	if err != nil {
 		m.Error("查询应用配置失败！", zap.Error(err))
 		c.ResponseError(errors.New("查询应用配置失败！"))
@@ -262,7 +262,7 @@ func (m *Manager) appconfig(c *wkhttp.Context) {
 		c.ResponseError(err)
 		return
 	}
-	appconfig, err := m.appconfigDB.query()
+	appconfig, err := m.appconfigDB.Query()
 	if err != nil {
 		m.Error("查询应用配置失败！", zap.Error(err))
 		c.ResponseError(errors.New("查询应用配置失败！"))

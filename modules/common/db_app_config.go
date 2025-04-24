@@ -7,30 +7,30 @@ import (
 	"github.com/tangseng-vge/TangSengDaoDaoServerLib/pkg/util"
 )
 
-type appConfigDB struct {
+type AppConfigDb struct {
 	session *dbr.Session
 	ctx     *config.Context
 }
 
-func newAppConfigDB(ctx *config.Context) *appConfigDB {
+func NewAppConfigDB(ctx *config.Context) *AppConfigDb {
 
-	return &appConfigDB{
+	return &AppConfigDb{
 		session: ctx.DB(),
 		ctx:     ctx,
 	}
 }
 
-func (a *appConfigDB) query() (*appConfigModel, error) {
+func (a *AppConfigDb) Query() (*appConfigModel, error) {
 	var m *appConfigModel
 	_, err := a.session.Select("*").From("app_config").OrderDesc("created_at").Load(&m)
 	return m, err
 }
 
-func (a *appConfigDB) insert(m *appConfigModel) error {
+func (a *AppConfigDb) insert(m *appConfigModel) error {
 	_, err := a.session.InsertInto("app_config").Columns(util.AttrToUnderscore(m)...).Record(m).Exec()
 	return err
 }
-func (a *appConfigDB) updateWithMap(configMap map[string]interface{}, id int64) error {
+func (a *AppConfigDb) updateWithMap(configMap map[string]interface{}, id int64) error {
 	_, err := a.session.Update("app_config").SetMap(configMap).Where("id=?", id).Exec()
 	return err
 }
