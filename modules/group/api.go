@@ -1574,7 +1574,7 @@ func (g *Group) groupQRCode(c *wkhttp.Context) {
 
 	c.Response(gin.H{
 		"day":    7,
-		"qrcode": fmt.Sprintf("%s/v1/%s", BASEURLL, strings.ReplaceAll(g.ctx.GetConfig().QRCodeInfoURL, ":code", uuid)),
+		"qrcode": fmt.Sprintf("%s%s", BASEURLL, strings.ReplaceAll(g.ctx.GetConfig().QRCodeInfoURL, ":code", uuid)),
 		"expire": time.Now().Add(time.Hour * 24 * 7).Format("01月02日"),
 	})
 

@@ -569,7 +569,7 @@ func (u *User) qrcodeMy(c *wkhttp.Context) {
 		BASEURLL = appConfigM.ApiAddr
 	}
 	c.Response(gin.H{
-		"data": fmt.Sprintf("%s/v1/%s", BASEURLL, path),
+		"data": fmt.Sprintf("%s%s", BASEURLL, path),
 	})
 }
 
@@ -1498,7 +1498,7 @@ func (u *User) getLoginUUID(c *wkhttp.Context) {
 	//  二维码包含服务器IP
 	c.JSON(http.StatusOK, gin.H{
 		"uuid":   uuid,
-		"qrcode": fmt.Sprintf("%s/v1/%s", BASEURLL, strings.ReplaceAll(u.ctx.GetConfig().QRCodeInfoURL, ":code", uuid)),
+		"qrcode": fmt.Sprintf("%s%s", BASEURLL, strings.ReplaceAll(u.ctx.GetConfig().QRCodeInfoURL, ":code", uuid)),
 	})
 }
 
