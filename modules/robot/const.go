@@ -20,8 +20,8 @@ const (
 var systemRobotMap = []*systemRobotMenu{
 	{
 		CMD:          "/基本信息",
-		Remark:       "MVC基本信息",
-		ReplyContent: "MVC是一款轻量级，高性能，重安全的即时通讯系统。",
+		Remark:       "Bage基本信息",
+		ReplyContent: "Bage是一款轻量级，高性能，重安全的即时通讯系统。",
 		Type:         string(None),
 	},
 	{
@@ -49,9 +49,9 @@ var systemRobotMap = []*systemRobotMenu{
 		Type:         string(None),
 	},
 	{
-		CMD:          "/Android包下载",
-		Remark:       "如何下载MVC Android包",
-		ReplyContent: "您好，MVC Android应用下载地址 暂未开放",
+		CMD:          "/Android/IOS包下载",
+		Remark:       "如何下载Bage Android/IOS包",
+		ReplyContent: "您好，Bage 应用下载地址 https://down.newhxchat.top",
 		Type:         string(None),
 	},
 	//{
